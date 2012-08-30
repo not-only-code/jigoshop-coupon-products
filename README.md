@@ -1,5 +1,5 @@
-Jigoshop Order Locators
------------------------
+Jigoshop Coupon Products
+------------------------
 
 Contributors: Carlos Sanz García  
 Tags: jigosghop, e-commerce, coupons, coupon product  
