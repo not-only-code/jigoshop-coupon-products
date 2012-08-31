@@ -33,7 +33,7 @@ function jigoshop_coupon_version() {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
+ * @since		0.1
  *
 **/
 function jigoshop_add_coupon() {
@@ -54,7 +54,7 @@ if ( is_admin() ) register_activation_hook( __FILE__, 'jigoshop_add_coupon' );
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
+ * @since		0.1
  *
 **/
 function jigoshop_del_coupon() {
@@ -69,11 +69,12 @@ function jigoshop_del_coupon() {
 if (is_admin()) register_deactivation_hook( __FILE__, 'jigoshop_del_coupon' );
 
 
+
 /**
  * Init plugin with dependences + hooks
  *
  * @package		Jigoshop
- * @subpackage 	Utils
+ * @subpackage 	Jigosgop Coupon Products
  * @since 		0.1
  *
  **/
@@ -84,31 +85,27 @@ function jigoshop_coupon_init() {
 	// dependeces
 	$active_plugins_ = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
 	if ( (in_array( 'jigoshop/jigoshop.php', $active_plugins_ ) && jigoshop_coupon_version() >= '1.3' ) && in_array( 'jigoshop-order-locator/jigoshop-order-locator.php', $active_plugins_)  ):
+		
+		add_action( 'jigoshop_new_order', 'jigoshop_check_for_coupons', 10 );
 			
 		// admin hooks
 		if (is_admin()) {
 			
-			add_action( 'save_post', 							'jigoshop_save_coupons', 1, 2 );
-			add_action( 'trashed_post',							'jigoshop_trashed_coupon', 20);
-			add_filter( 'post_row_actions',						'jigoshop_coupon_row_actions', 20, 2);
-			add_action( 'admin_print_scripts' , 				'jigoshop_coupon_admin_scripts');
-			add_action( 'admin_enqueue_scripts', 				'jigoshop_coupon_admin_styles', 640 );
-			add_filter( 'jigoshop_product_type_selector',		'jigoshop_add_coupon_type_selector', 10);
-			add_action( 'jigoshop_process_shop_order_meta',		'jigoshop_check_for_coupons', 10 );
-			add_action( 'jigoshop_process_shop_coupon_save',	'jigoshop_save_coupon', 10, 2 );
-			add_action( 'admin_head',							'jigoshop_remove_coupon_delete_link', 20 );
-	
-		// frontend hooks	
-		} else {
-			
-			add_action( 'jigoshop_new_order', 			  		'jigoshop_check_for_coupons', 10 );
-			
-		}
+			add_action( 'save_post', 'jigoshop_save_coupons', 1, 2 );
+			add_action( 'trashed_post', 'jigoshop_trashed_coupon', 20);
+			add_filter( 'post_row_actions', 'jigoshop_coupon_row_actions', 20, 2);
+			add_action( 'admin_print_scripts' , 'jigoshop_coupon_admin_scripts');
+			add_action( 'admin_enqueue_scripts', 'jigoshop_coupon_admin_styles', 640 );
+			add_filter( 'jigoshop_product_type_selector', 'jigoshop_add_coupon_type_selector', 10);
+			add_action( 'jigoshop_process_shop_order_meta', 'jigoshop_check_for_coupons', 10 );
+			add_action( 'jigoshop_process_shop_coupon_save', 'jigoshop_save_coupon', 10, 2 );
+			add_action( 'admin_head', 'jigoshop_remove_coupon_delete_link', 20 );
+		};
 		
 	else:
 		
 		if (is_admin())
-			add_action( 'admin_notices', 			  		'jigoshop_coupon_dependences');
+            add_action( 'admin_notices', 'jigoshop_coupon_dependences');
 		
 	endif;
 };
@@ -121,7 +118,7 @@ add_action('plugins_loaded', 'jigoshop_coupon_init');
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
+ * @since		0.1
  *
 **/
 function jigoshop_coupon_admin_scripts() {
@@ -137,7 +134,7 @@ function jigoshop_coupon_admin_scripts() {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
+ * @since		0.1
  *
  **/
 function jigoshop_coupon_admin_styles() {
@@ -156,7 +153,7 @@ function jigoshop_coupon_admin_styles() {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
+ * @since		0.1
  *
  **/
 function jigoshop_add_coupon_type_selector( $types ) {
@@ -175,7 +172,7 @@ function jigoshop_add_coupon_type_selector( $types ) {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
+ * @since		0.1
  *
  **/
 function jigoshop_save_coupons( $post_id, $post ) {
@@ -199,7 +196,7 @@ function jigoshop_save_coupons( $post_id, $post ) {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
+ * @since		0.1
  *
  **/
 function jigoshop_check_for_coupons($post_id = false) {
@@ -240,6 +237,7 @@ function jigoshop_check_for_coupons($post_id = false) {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
+ * @since		0.1
  *
 **/
 function jigoshop_trashed_coupon($post_id = false) {
@@ -258,8 +256,7 @@ function jigoshop_trashed_coupon($post_id = false) {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- *
- * @since 0.1
+ * @since		0.1
  *
 **/
 function jigoshop_coupon_row_actions($actions, $post) {
@@ -306,7 +303,7 @@ function jigoshop_remove_coupon_delete_link() {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
+ * @since		0.1
  *
 **/
 function jigoshop_save_coupon($post_id = false, $post = false) {
@@ -335,7 +332,7 @@ function jigoshop_save_coupon($post_id = false, $post = false) {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
+ * @since		0.1
  *
 **/
 function jigoshop_exists_order_coupon($locator = false) {
@@ -381,7 +378,7 @@ function jigoshop_exists_order_coupon($locator = false) {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
+ * @since		0.1
  *
 **/
 function jigoshop_create_coupon($locator = false, $amount = 0) {
@@ -413,8 +410,8 @@ function jigoshop_create_coupon($locator = false, $amount = 0) {
  *
  * @package		Jigoshop
  * @subpackage 	Jigosgop Coupon Products
- * @since 0.1
- */
+ * @since		0.1
+**/
 function jigoshop_coupon_dependences() {
 	global $current_screen;
 		
